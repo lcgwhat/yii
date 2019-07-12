@@ -59,6 +59,44 @@ https://www.yiichina.com/tutorial/997
 ````
 
 
+### 自定义创建验证器（Validators）
+除了使用 Yii 的发布版里所包含的核心验证器之外，你也可以创建你自己的验证器。 自定义的验证器可以是`行内验证器`，也可以是独立验证器。
+
+- 若某特性的验证失败了，该方法/函数应该调用 yii\base\Model::addError() 保存错误信息到模型内。 这样这些错误就能在之后的操作中，被读取并展现给终端用户。
+
+```
+use yii\base\Model;
+
+class MyForm extends Model
+{
+    public $country;
+    public $token;
+
+    public function rules()
+    {
+        return [
+            // 定义为模型方法 validateCountry() 的行内验证器
+            ['country', 'validateCountry'],
+
+            // 定义为匿名函数的行内验证器
+            ['token', function ($attribute, $params) {
+                if (!ctype_alnum($this->$attribute)) {
+                    $this->addError($attribute, 'The token must contain letters or digits.');
+                }
+            }],
+        ];
+    }
+
+    public function validateCountry($attribute, $params)
+    {
+        if (!in_array($this->$attribute, ['USA', 'Web'])) {
+            $this->addError($attribute, 'The country must be either "USA" or "Web".');
+        }
+    }
+}
+```
+
+
 
 
 

@@ -1,0 +1,16 @@
+过滤条件
+
+当 WHERE 条件来自用户的输入时，你通常要忽略用户输入的空值。
+例如，在一个可以通过用户名或者邮箱搜索的表单当中，用户名或者邮箱 输入框没有输入任何东西，
+这种情况下你想要忽略掉对应的搜索条件， 那么你就可以使用 filterWhere() 方法来实现这个目的：
+
+// $username 和 $email 来自于用户的输入
+$query->filterWhere([
+    'username' => $username,
+    'email' => $email,		
+]);
+
+filterWhere() 和 where() 唯一的不同就在于，前者 将忽略在条件当中的hash format的空值。所以如果 $email 为空而 $username 不为空，
+那么上面的代码最终将生产如下 SQL ...WHERE username=:username。
+
+类似于 andWhere() 和 orWhere()， 你可以使用 andFilterWhere() 和 orFilterWhere() 方法 来追加额外的过滤条件。

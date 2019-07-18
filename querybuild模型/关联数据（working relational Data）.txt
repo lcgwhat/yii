@@ -1,0 +1,56 @@
+1，除了处理单个数据库表之外，`Active Record` 还可以将相关数据集中进来， 使其可以通过原始数据轻松访问
+
+
+ 例如，客户数据与订单数据相关 因为一个客户可能已经存放了一个或多个订单。这种关系通过适当的声明，
+ 你可以使用 $customer->orders 表达式访问客户的订单信息 这表达式将返回包含 Order Active Record 实例的客户订单信息的 数组。
+
+声明 关联关系 （declaraing relations）
+
+
+必须在 activeRecord 类中定义 关联关系，才能使用 activeRecord 的关联数据。
+
+hasMany/hasOne第二个参数：  数组的值填的是主数据的列（当前要声明关联的 Active Record 类为主数据）， 而数组的键要填的是相关数据的列。
+class Customer extends ActiveRecord
+{
+    // ...
+
+    public function getOrders()
+    {
+        return $this->hasMany(Order::className(), ['customer_id' => 'id']);
+    }
+}
+
+$customer->orders; // 获得 `Order` 对象的数组
+$customer->getOrders(); // 返回 ActiveQuery 类的实例
+
+每个关联方法必须这样命名：getXyz。然后我们通过 xyz（首字母小写）调用这个关联名。 请注意关联名是大小写敏感的。
+
+当声明一个关联关系的时候，必须指定好以下的信息：
+
+1：关联的对应关系：通过调用 hasMany() 或者 hasOne() 指定。
+
+2：相关联 Active Record 类名：用来指定为 hasMany() 或者 hasOne() 方法的第一个参数。 推荐的做法是调用 Xyz::className() 来获取类名称的字符串，
+以便您 可以使用 IDE 的自动补全，以及让编译阶段的错误检测生效。
+
+3:两组数据的关联列:用以指定两组数据相关的列（hasOne()/hasMany() 的第二个参数）。
+数组的值填的是主数据的列（当前要声明关联的 Active Record 类为主数据）， 而数组的键要填的是相关数据的列。
+
+
+访问关联数据（Accessing Relational Data）
+定义了关联关系后，你就可以通过关联名访问相应的关联数据了。就像 访问一个由关联方法定义的对象一样，具体概念请查看 属性。 因此，现在我们可以称它为 关联属性 了。
+
+// SELECT * FROM `customer` WHERE `id` = 123
+$customer = Customer::findOne(123);
+
+// SELECT * FROM `order` WHERE `customer_id` = 123
+// $orders 是由 Order 类组成的数组
+$orders = $customer->orders;
+ 当你通过 getter 方法 getXyz() 声明了一个叫 xyz 的关联属性，你就可以像 属性 那样访问 xyz。注意这个命名是区分大小写的。
+
+如果使用 hasMany() 声明关联关系，则访问此关联属性 将返回相关的 Active Record 实例的数组； 如果使用 hasOne() 声明关联关系，访问此关联属性 将返回相关的 Active Record 实例，如果没有找到相关数据的话，则返回 null。
+
+当你第一次访问关联属性时，将执行 SQL 语句获取数据，如 上面的例子所示。如果再次访问相同的属性，将返回先前的结果，而不会重新执行 SQL 语句。要强制重新执行 SQL 语句，你应该先 unset 这个关联属性， 如：unset（$ customer-> orders）
+
+
+
+延迟加载和即时加载（Lazy Loading and Eager Loading）

@@ -47,9 +47,12 @@ $customer = Customer::findOne(123);
 $orders = $customer->orders;
  当你通过 getter 方法 getXyz() 声明了一个叫 xyz 的关联属性，你就可以像 属性 那样访问 xyz。注意这个命名是区分大小写的。
 
-如果使用 hasMany() 声明关联关系，则访问此关联属性 将返回相关的 Active Record 实例的数组； 如果使用 hasOne() 声明关联关系，访问此关联属性 将返回相关的 Active Record 实例，如果没有找到相关数据的话，则返回 null。
+hasMany() 和 hasOne() 区别：
+如果使用 hasMany() 声明关联关系，则访问此关联属性 将返回相关的 Active Record 实例的数组；
+如果使用 hasOne() 声明关联关系，访问此关联属性 将返回相关的 Active Record 实例，如果没有找到相关数据的话，则返回 null。
 
-当你第一次访问关联属性时，将执行 SQL 语句获取数据，如 上面的例子所示。如果再次访问相同的属性，将返回先前的结果，而不会重新执行 SQL 语句。要强制重新执行 SQL 语句，你应该先 unset 这个关联属性， 如：unset（$ customer-> orders）
+当你第一次访问关联属性时，将执行 SQL 语句获取数据，如 上面的例子所示。
+如果再次访问相同的属性，将返回先前的结果，而不会重新执行 SQL 语句。要强制重新执行 SQL 语句，你应该先 unset 这个关联属性， 如：unset（$ customer-> orders）
 
 
 

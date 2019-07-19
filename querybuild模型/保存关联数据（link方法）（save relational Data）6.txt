@@ -1,0 +1,25 @@
+
+保存关联数据 （Saving Relations） ?
+
+使用关联数据时，您经常需要建立不同数据之间的关联或销毁 现有关联。这需要为定义的关联的列设置正确的值。通过使用 Active Record， 你就可以编写如下代码：
+
+$customer = Customer::findOne(123);
+$order = new Order();
+$order->subtotal = 100;
+// ...
+
+// 为 Order 设置属性以定义与 "customer" 的关联关系
+$order->customer_id = $customer->id;
+$order->save();
+Active Record 提供了 link() 方法，可以更好地完成此任务：
+
+$customer = Customer::findOne(123);
+$order = new Order();
+$order->subtotal = 100;
+// ...
+
+$order->link('customer', $customer);
+link() 方法需要指定关联名 和要建立关联的目标 Active Record 实例。
+该方法将修改属性的值 以连接两个 Active Record 实例，并将其保存到数据库。在上面的例子中，它将设置 Order 实例的 customer_id 属性 为 Customer 实例的 id 属性的值，然后保存 到数据库。
+
+

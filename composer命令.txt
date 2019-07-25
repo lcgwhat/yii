@@ -22,3 +22,6 @@ composer remove twbs/bootstrap
 composer update 包名
 #第一次使用composer用它，没有composer.json文件用它
 composer install 包名
+
+
+gittool

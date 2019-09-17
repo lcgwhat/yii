@@ -1,0 +1,18 @@
+joinwith :查询先查询出主表的数据，再去查关联表的查询，即时再启用即时加载的情况下使用joinwith或innerJoin()，
+相应的关联数据也不会从这个join查询的结果中填充因此每个连接关系还有一个额外的查询，和with的即时查询差不多
+例如：：
+        $query = PackZone::find();
+        $query->joinWith(['sections']);
+        $query->andWhere(['pack_zone.storehouse_id' => $this->getStorehouseId()]);
+        $query->andFilterWhere(['like', 'pack_zone.name', strtoupper($form->name)]);
+        $query->andFilterWhere(['like', 'pack_zone.describe', $form->describe]);
+        $query->andFilterWhere(['like', 'section.name', strtoupper($form->section)]);
+        $query->groupBy('pack_zone.id');
+
+-》	
+SELECT `pack_zone`.* FROM `pack_zone` LEFT JOIN `section` ON `pack_zone`.`id` = `section`.`pack_zone_id` WHERE `pack_zone`.`storehouse_id`=4 
+GROUP BY `pack_zone`.`id` ORDER BY `id` DESC LIMIT 100
+
+-》
+SELECT * FROM `section` WHERE `pack_zone_id` IN (37, 36, 35, 34, 33)
+

@@ -3,138 +3,347 @@ import { runInNewContext } from "vm";
 // 链表
 
 
-class Nodes{
-    public data:any;
-    public next:any;
+class Nodes {
+    public data: any;
+    public next: any;
 
-    constructor(data:any = null, next:any = null){
+    constructor(data: any = null, next: any = null) {
         this.data = data;
         this.next = next;
     }
 }
-class LinkedList{
-   
-    
-    private size:number = 0;
-    private head:Nodes;
-
-    constructor (){
-       this.head = new Nodes();
-       this.size = 0; 
-    }
-   
-    /**
-     * 在指定索引位置添加
-     * @param index 
-     * @param data 
-     */
-    public add(index:number, data:any){
-        if (this.size < index) {
-             throw '超过链表范围';
-        }
-        let prev:Nodes = this.head;
-       
-        // 找到index节点
-        for (let i=0; i<index; i++) {
-            prev = prev.next    
-        }
-            
-        prev.next = new Nodes(data, prev.next);
-
-        this.size ++;
-    }
-    // 在链表头部添加
-    public addFirst(data:any){
-        // 实现一
-        // let node = new Nodes(data)
-        // node.next = this.head;
-        
-        //this.head = new Nodes(data, this.head);
-        //this.size++;
-       
-        this.add(0,data)
-    }
+class LinkedList {
 
     /**
-     * 尾部添加
-     * @param data 
+     * 单链表头结点（哨兵节点）
      */
-    public addLast(data:any){
-        this.add(this.size, data)
-    }
-    /**
-     * 编辑
-     * @param index 
-     * @param data 
-     */
-    public edit(index:number, data:any){
-        
-        if (index > this.size) {
-            throw '超过链表范围'
-        }
-        let prev = this.head; // 1
-        for (let i=0; i<=index; i++) {
-            if (index == i) {
-                prev.data = data;
-            }
-            prev = prev.next;
-        }
-    }
-    
-    /**
-     * 查找
-     * @param index 
-     */
-    public select(index:number){
-        if (index > this.size) {
-            throw "超过链表范围"
-        }
-        let prev = this.head;
-        for (let i=0; i<=index; i++) {
-            if (index == i) {
-                return prev;
-            }
-            prev = prev.next;
-        }
-    }
+    public head: any;
 
-    public delete(index:number){
-        if (index > this.size || index < 1 || this.size==0) {
-            throw "超过链表范围"
-        }
-        let prev = this.head;
-        console.log(prev)
-        for (let i=0; i<=1; i++) {
-            prev = prev.next;
-        }
-        console.log(prev)
-        if (this.size == index) {
-            prev.next = null;
+    public length: number;
+
+    constructor(head: any = null) {
+        if (head != null) {
+            this.head = head;
         } else {
-            prev.next = prev.next.next; 
+            this.head = new Nodes()
         }
-        
-        this.size--;
+        this.length = 0;
     }
 
-    public deleteLast(){
-        if (this.size == 0) {
-            throw '链表长度为0';
+    /**
+     * 获取链表长度
+     *
+     * @return int
+     */
+    public getLength() {
+        return this.length;
+    }
+
+    /**
+     * 插入数据 采用头插法 插入新数据
+     * @param data 
+     * @returns Nodes|bool
+     */
+    public insert(data: any) {
+        return this.insertDataAfter(this.head, data);
+    }
+
+
+    public delete(node: Nodes) {
+        if (null == node) {
+            return false;
         }
-        let prev = this.head;
-        for (let i=0; i<this.size; i++){
-            prev = prev.next;
+
+        // 获取待删除节点的前置节点
+        let preNode = this.getPreNode(node);
+
+        // 修改指针指向
+        preNode.next = node.next;
+        this.length++;
+
+        return true;
+    }
+    /**
+     * 通过索引获取节点
+     *
+     * @param int $index
+     *
+     * @return Nodes|null
+     */
+    public getNodeByIndex(index:number) {
+        if (index > this.length) {
+            return false;
         }
-        prev.next = null;
-        this.size--;
+        let curNode = this.head.next;
+        for(let i=0; i<index; ++i) {
+            curNode.next;
+        }
+
+        return curNode;
+    }
+    
+    /**
+     * 输出单链表 当data的数据为可输出类型
+     *
+     * @return bool
+     */
+    public printList(){
+        if (null == this.head.next) {
+            return false;
+        }
+
+        let curNode = this.head;
+        // 防止链表带环，控制遍历次数
+        while (curNode.next != null && this.length--) {
+            console.log(`${curNode.next.data}->`)
+            curNode = curNode.next;
+        }
+        console.log('NULL')
+
+        return true;
+    }
+
+     /**
+     * 输出单链表 当data的数据为可输出类型
+     *
+     * @return bool
+     */
+    public printListSimple(){
+        if (null == this.head.next) {
+            return false;
+        }
+
+        let curNode = this.head;
+       
+        while (curNode.next != null ) {
+            console.log(`${curNode.next.data}->`)
+            curNode = curNode.next;
+        }
+        console.log('NULL')
+
+        return true;
+    }
+
+    public getPreNode(node: Nodes) {
+        if (node == null) {
+            return false;
+        }
+
+        let curNode = this.head;
+        let preNode = this.head;
+        // 遍历找到前置节点 要用全等判断是否是同一个对象
+        // http://php.net/manual/zh/language.oop5.object-comparison.php
+        while (curNode !== node && curNode != null) {
+            preNode = curNode;
+            curNode = curNode.next;
+        }
+
+        return preNode;
+    }
+
+    /**
+     * 在某个节点后插入新的节点 (直接插入数据)
+     *
+     * @param SingleLinkedListNode $originNode
+     * @param                      $data
+     *
+     * @return SingleLinkedListNode|bool
+     */
+    public insertDataAfter(originNode: Nodes, data: any) {
+        // 如果originNode为空，插入失败
+        if (originNode == null) {
+            return false;
+        }
+
+        // 新建链表节点,新节点的下一个节点为源节点的下一个节点
+        let newNode = new Nodes(data, originNode.next);
+
+        // 在originNode后插入newNode
+        originNode.next = newNode;
+
+        // 链表长度++
+        this.length++;
+        return newNode;
+    }
+
+    /**
+     * 在某个节点后插入新的节点
+     *
+     * @param Nodes $originNode
+     * @param Nodes $node
+     *
+     * @return SingleLinkedListNode|bool
+     */
+    public insertNodeAfter(originNode: Nodes, node: Nodes) {
+        // 如果originNode为空，插入失败
+        if (originNode == null) {
+            return false;
+        }
+
+        node.next = originNode.next;
+        originNode.next = node;
+        this.length++;
+
+        return node;
+    }
+
+
+     /**
+     * 构造一个有环的链表
+     */
+    public buildHasCircleList(){
+        let data = [1, 2, 3, 4, 5, 6, 7, 8];
+
+        let node0 = new Nodes(data[0]);
+        let node1 = new Nodes(data[1]);
+        let node2 = new Nodes(data[2]);
+        let node3 = new Nodes(data[3]);
+        let node4 = new Nodes(data[4]);
+        let node5 = new Nodes(data[5]);
+        let node6 = new Nodes(data[6]);
+        let node7 = new Nodes(data[7]);
+       
+        this.insertNodeAfter(this.head, node0);
+        this.insertNodeAfter(node0, node1);
+        this.insertNodeAfter(node1, node2);
+        this.insertNodeAfter(node2, node3);
+        this.insertNodeAfter(node3, node4);
+        this.insertNodeAfter(node4, node5);
+        this.insertNodeAfter(node5, node6);
+        this.insertNodeAfter(node6, node7);
+
+        node7.next = node4;
     }
 }
 
-let x = new LinkedList();
- x.addFirst('小米1');
- x.add(1,'小米2')
+let list = new LinkedList();
+list.insert(5)
 
- x.add(2,'小米3');
- x.delete(3)
- 
-console.log(x)
+
+
+/**
+ * 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+ * @param n 倒数第 n 个节点
+ */
+function removeNthFromEnd(n:number){
+    // 哑节点
+     let prev = list.head;
+    let slow = prev;
+    let first = prev;
+
+    for (let i=0; i<n+1; i++) {
+        first = first.next;
+    }
+
+    while (first != null) {
+        slow = slow.next;
+        first = first.next;
+    }
+    slow.next  = slow.next.next;
+    list.length--;
+    return prev.next;
+}
+console.log(removeNthFromEnd(1))
+list.printListSimple()
+
+class LinklistStack {
+    private length: number;
+    private head: Nodes;
+
+    constructor() {
+        this.head = new Nodes();
+        this.length = 0;
+    }
+
+
+
+    /**
+     * 出栈
+     * 
+     * @return boolean
+     */
+    public pop() {
+        if (0 == this.length) {
+            return false;
+        }
+
+        this.head.next = this.head.next.next;
+        this.length--;
+
+        return true;
+    }
+    /**
+     * 入栈
+     * @param value 
+     * @return Nodes|boolean
+     */
+    public push(value: any) {
+        return this.pushNode(new Nodes(value))
+    }
+
+    /**
+     * 入栈
+     * @param node Nodes
+     * @return boolean|Nodes
+     */
+    public pushNode(node: Nodes) {
+        if (null == node) {
+            return false;
+        }
+        node.next = this.head.next;
+        this.head.next = node;
+
+        this.length++;
+
+        return true;
+    }
+
+    /**
+     * 获取栈顶
+     * @return Node
+     */
+    public top() {
+        if (this.length == 0) {
+            return false;
+        }
+
+        return this.head.next;
+    }
+
+    /**
+     * 打印栈
+     */
+    public printSelf() {
+        if (this.length == 0) {
+            document.body.innerHTML = 'empty stack'
+            return false;
+        }
+
+        var str = `head.next->`;
+        let curNode = this.head;
+
+        while (curNode.next) {
+            str += `${curNode.next.data}->`;
+
+            curNode = curNode.next;
+        }
+        str += `null`;
+        document.body.innerText = str;
+    }
+
+    public getLength() {
+        return this.length;
+    }
+
+    public isEmpty() {
+        return this.length > 0 ? true : false;
+    }
+}
+
+let xx = new LinklistStack();
+
+xx.push(1);
+xx.push(2);
+
+//xx.printSelf();
+

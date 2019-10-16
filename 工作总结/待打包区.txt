@@ -1,0 +1,51 @@
+
+
+类中self 和 static的区别，打比方
+
+class Car{
+
+  public static function Model(){
+	self::getModel()
+}
+   private static function getModel(){
+  	echo '我是小李' 
+  }
+}
+
+
+
+class Bike extends Car {
+
+	private static function getModel(){
+	     echo "我是小米"	
+	}
+}
+调用Mercedes::model() 输出 ‘我是小李’，
+
+
+修改 Car 类
+
+class Car{
+
+  public static function Model(){
+	static::getModel()
+}
+   private static function getModel(){
+  	echo '我是小李' 
+  }
+}
+调用Mercedes::model() 输出 ‘我是小米’，
+
+
+对于self的解释
+关键字“self”的工作原理是：它会调用当前类（current class）的方法。因为model方法只在class Car中定义的，所以对它来说当前类就是class Car。model中的self::getModel()，调用的自然也就是class Car中的getModel方法。
+
+这个行为似乎不是我们想要的，它不符合面向对象的设计原则。如何解决呢？可以使用关键字static。
+
+static关键字和延迟静态绑定（late static binding）
+在PHP5.3中，加入了一个新的特性，叫做延迟静态绑定。它可以帮我们实现多态，解决上面的问题。简单来说，延迟静态绑定意味着，当我们用static关键字调用一个继承方法时，它将在运行时绑定调用类(calling class)。
+在上面的例子中，如果我们使用延迟静态绑定（static），意味当我们调用“Bike::model();”时，class Bike中的getModel方法将会被调用。因为Bike是我们的调用类。
+
+
+编码冗余字段处理：
+业务模型的使用-----

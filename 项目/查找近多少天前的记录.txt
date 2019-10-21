@@ -1,0 +1,9 @@
+ public function getPackStorageNum(){
+        $time = DateTimeUtility::daysBefore(15).' 00:00:00';
+
+        $query = PackStorage::find();
+        $query->andWhere(['pack_staging_zone.zone_id'=>$this->getPackZoneId()]);
+        $query->andWhere(['>=', 'pack_storage.create_time', $time]);
+
+        return $query->count();
+    }

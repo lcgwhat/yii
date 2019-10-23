@@ -1,0 +1,7 @@
+phpstrom
+ ctrl+N   查找类
+ctrl + w 选择区选择一行
+
+ctrl+shift + N 快速查找文件
+
+alt+回车    补全方法

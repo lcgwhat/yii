@@ -1,0 +1,16 @@
+比如productModel 的create静态方法 返回一个model
+
+
+方法中就一个操作，不用开事务
+
+
+
+self::checkType   返回 new Error();对象
+在调用$res = self::checkType 的地方  在
+
+ $checkType = static::checkType($param['type']);
+        if (Error::isError($checkType)) {
+            return $checkType;
+        }
+
+这个返回的是Error，不用再new 一次,直接return出去就可以理论

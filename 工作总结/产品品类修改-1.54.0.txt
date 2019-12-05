@@ -1,10 +1,10 @@
 比如productModel 的create静态方法 返回一个model
 
-
+===================
 方法中就一个操作，不用开事务
 
 
-
+=============
 self::checkType   返回 new Error();对象
 在调用$res = self::checkType 的地方  在
 
@@ -14,3 +14,21 @@ self::checkType   返回 new Error();对象
         }
 
 这个返回的是Error，不用再new 一次,直接return出去就可以理论
+
+======================
+在批量设置时，$values参数，尽量在函数内部再遍历格式化一次，
+即：尽量不要让外部去决定传入值的顺序。除非值与顺序无关
+public static function batchInsert($values){
+     foreach ($values as $value) {
+            $items[] = [
+                $value['productId'],
+                $value['specificationId'],
+                ProductAttribute::STATUS_1000,
+            ];
+        }
+}
+=================
+## 数据查询返回
+1. 使用 all() , 返回的是AR数组, 假如没有数据返回 `空数组`
+2. 使用one() ,返回的是AR对象,  假如没有数据返回 `null`
+===========

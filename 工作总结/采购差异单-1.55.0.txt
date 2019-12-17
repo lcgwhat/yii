@@ -1,0 +1,22 @@
+采购差异单创建，在对账单终审是创建。
+错误思路： 采购差异单创建依赖 对账单的ID
+
+采购差异单的模型 ： 中create 方法。应该不依赖于对账单的ID  , 
+不能将相关ID作为参数，以获得订单信息，这样导致 上下级关系紧密耦合，无法分离,
+ 也会产生歧义，在create方法返回的是 差异单模型 
+
+    /**
+     * 创建采购差异单
+     * @param array $attributes
+     * supplierId
+     * type
+     * note
+     * @param array $items
+     * productId  产品ID
+     * quantity    产品数量
+     * originalUnitPrice  产品原单价
+     * reconcileUnitPrice  单价
+     * @param string $relatedNumber 相关单号
+     * @return Error|PurchaseReconciliationDiscrepancyOrderModel
+     */
+应当： create($attributes ,$items )

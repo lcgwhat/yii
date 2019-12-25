@@ -1,3 +1,4 @@
+## 模型驱动表单
 ```
 <form (ngSubmit)="login()" ))></form>
 <input type="text" class="form-control" name="password" [(ngModel)]="model.password">
@@ -28,7 +29,28 @@
 -----
 2. 发送代理
  - 配置代理，防止跨域， 在 `package.json`配置 "start": "ng serve --proxyConfig proxy.conf.json",
+ ```
+ proxy.conf.json文件
+
+ {
+  "/api": {
+    "target": "http://127.0.0.1",
+    "sesure": false,
+    "pathRewrite": {
+      "^/api": "oop/frontend/web"
+    }
+  }
+}
+
+pathRewrite: 会重写路由，比如：
+http://127.0.0.1/api => http://127.0.0.1/oop/frontend/web
+ ```
  - 导入 `HttpClient` 模块才能使用http发送请求 
+
+    - httpClient 
+    - 依赖注入
+    - 发送请求
+    - 响应请求 （observation）
  - 和后台打交道一般写入`服务`
  - 组件中调用服务并调用之
 3. 后台创建接口

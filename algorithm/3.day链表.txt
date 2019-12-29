@@ -1,8 +1,0 @@
-链表：
-缓存淘汰策略	
-先进先出策略FIFO (first in first out), 最少使用策略LFU (least frequently used) 最近最少使用策略LRU(least recently used)
-
-什么是链表： 通过指针将零散的内存块连接串联起来
-
-链表类型： 单链表，双向链表，循环链表
-链表实现 LRU 缓存淘汰策略

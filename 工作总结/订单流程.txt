@@ -1,0 +1,35 @@
+
+1.选择产品
+2.创建订单
+创建订单伪代码
+checkAttributes($attributes); // 检查相关订单属性
+checkAndGetProducts($products); // 检查产品信息并获取相关信息
+createOrder(); // 创建订单
+addTrace(); // 添加日志
+addOrderItem()； // 订单明细
+addContact(); // 保存联系人
+lockStock(); //库存锁定   -》 创建库存锁定单 -》 订单保存库存锁定单号
+
+=========
+库存锁定单
+stockLockOrder 创建伪代码
+stockLockOrderCreate();
+addItem(); // 创建单行
+lockStock(products， $storehouseId, $type,); // 锁定库存  
+=========
+发货单 shippingOrder
+这是订单已经支付完成，等待仓库发货，
+
+受理接单
+伪代码
+getCanMergeShipping（）； // 获取可合并的订单
+
+batchModifyLogistics($orders,  $logistics); // 修改订单物流
+
+getAndCheckAcceptOrder($orders) ; // 检查订单信息，获取相关信息
+
+shippingOrderCreat();  // 发货订单创建
+
+订单分派到仓库，返回出库单单号
+
+保存出库单单号

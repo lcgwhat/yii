@@ -58,6 +58,10 @@
  <input type="text" class="form-control" name="name" [ngModelOptions]="{updateOn: 'blur'}"
            [(ngModel)]="model.name" required #name="ngModel" appPhoneValidator
     >
+
+     <div class="error" [hidden]="phone.valid || phone.untouched">
+      <span *ngIf="phone?.errors?.existName">手机号码被使用</span>
+    </div>
 ```
   - 每当表单值变化之后，都会执行所有验证器，在每次按键之后都发出 HTTP 请求会给后端 API 带来沉重的负担，应该尽量避免， 
   - 可以把 updateOn 属性从 change（默认值）改成 submit 或 blur 来推迟表单验证的更新时机。

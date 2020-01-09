@@ -9,12 +9,26 @@
         'validationUrl' => Url::toRoute(['validate-form']),
     ]
 ); ?>
+
+
+        <?= $form->field($model, 'number',['enableAjaxValidation' => true]) ?>
 ```
 - 注意哦，id和enableAjaxValidation一个都不能少。
 - 关于validateUrl我们做一个说明。如果你不设置该参数，该地址默认是你当前路由，而又恰巧你当前路由就是表单form的action
 - 你会很好奇的发现，当表单项input失去焦点的时候，你对数据的修改已经提交到后端进行了处理了？这往往不是我们想要的，此时就需要给validateUrl设置一个路由地址，其所要请求的操作的意义就在于异步做验证！我们看具体实现：
 
 ```$xslt
+
+    /**
+     * ajax,表格输入时验证专项款名字唯一
+     */
+    public function actionCheckAdd() {
+        $model = new SpecialAccountForm();
+        if ($model->loadPost()) {
+            return $this->renderValidate($model, ['name']);
+        }
+        return true;
+    }
 //表单提交操作，基本上不需要做改动
 if ($model->load(Yii::$app->request->post()) && $model->save()) {
         return $this->redirect(['index']);

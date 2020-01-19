@@ -1,0 +1,18 @@
+pwd 显示当前的工作目录
+
+$PWD是一个环境变量，得到当前的工作目录
+
+
+rpm命令是RPM软件包的管理工具。
+rpm -e tree          # 卸载
+rpm -qa|grep -i php    # 查询
+
+journalctl 用来查询 systemd-journald 服务收集到的日志
+journalctl -xe
+
+tail 命令可用于查看文件的内容，有一个常用的参数 -f 常用于查阅正在改变的日志文件。
+tail -f filename 会把 filename 文件里的最尾部的内容显示在屏幕上，并且不断刷新，只要 filename 更新就可以看到最新的文件内容。
+tail -n 100 /etc/cron  #显示最后100行数据
+tail -n -100 /etc/cron #除了前99行不显示外，显示第100行到末尾行
+
+top 命令监听服务器性能

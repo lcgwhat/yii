@@ -83,6 +83,8 @@ function SpecAdjoinMatrix(){
             this.fillInSpec(item.specs);
         });
     }
+
+    
     // 计算可选规格边
 
     // 同等级边

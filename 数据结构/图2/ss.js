@@ -10,15 +10,17 @@
  */
 
 // 创建邻接矩阵
-function AdjoinMatrix (){
+function AdjoinMatrix (vertx){
     var vertex;// 顶点数组
     var quantity; // 矩阵长度
     var adjoinArray; // 矩阵数组
-    function init(vertx){
-        vertex = vertex;
+    init();
+    function init(){
+       vertex = vertx;
         quantity = vertex.length;
         adjoinArray = [];
         adjoinArray = Array(quantity * quantity).fill(0);
+        console.log(adjoinArray)
     }
     // 传入一个顶点，和当前顶点可达的顶点数组，将对应位置置为1
     function setAdjoinVertexs(id,sides){
@@ -63,8 +65,10 @@ function AdjoinMatrix (){
     });
     return unions;
   }
-
-
+  return {
+      setAdjoinVertexs,
+      getUnions
+  }
 }
 
 function SpecAdjoinMatrix(){
@@ -79,4 +83,13 @@ function SpecAdjoinMatrix(){
             this.fillInSpec(item.specs);
         });
     }
+    // 计算可选规格边
+
+    // 同等级边
+
+    chassisTypes: ["C4(4A)"]
+    engineTypes: ["AAD"]
+    years: ["1992"]
+
+    [{engine_type: "AAD", model_year: "1992", chassis_type: "C4(4A)"}]
 }

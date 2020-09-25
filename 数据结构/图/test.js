@@ -3,7 +3,7 @@ function SpecAdjoinMatrix(vertexArr, optionalArr){
         let arr = [];
         vertexArr.forEach(function(ele,index){
             var k = [];
-            
+  
             optionalArr.forEach(element => {
                 let s = new Set(element);
                 if (s.has(ele)) {

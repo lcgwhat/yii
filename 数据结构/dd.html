@@ -5,10 +5,34 @@
   <title>Marked in the browser</title>
 </head>
 <body>
-
+  <script src='./tu.js'></script>
   <script>
-  	
-   function getEdgeArr(vertexArr, optionalArr){
+     var Arr = [['A-1','A-2','A-3'],['A-2','B-2','C-2'],['B-3','C-3','A-3']]; 
+     var vertexArr = ['A-1','B-1','C-1','A-2','B-2','C-2','A-3','B-3','C-3',];
+     var optionalArr = [
+     	['A-1','B-1','C-1'],
+     	['B-1','C-3'],
+     	['A-3','B-2','C-1']
+     ];
+   function getSameLevelEdgeArr(vertexArr, sameArr){
+     let arr = [];
+     vertexArr.forEach(function(ele,index){
+      var k = [];
+      sameArr.forEach(function(element,key){
+        let s = new Set(element);
+                if (s.has(ele)) {
+                    s.forEach(va=>{
+                        if (va != ele) {
+                        	 k.push(va)
+                        }
+                    })
+            }
+      })
+      arr[ele] = Array.from(new Set(k))
+     })
+     return arr;
+   }
+   function getSpecEdgeArr(vertexArr, optionalArr){
          let arr = [];
         vertexArr.forEach(function(ele,index){
         	var k = [];
@@ -22,17 +46,23 @@
                     })
                 }
             });
-            arr[ele] = new Set(k)
+            arr[ele] = Array.from(new Set(k))
         })
-       return arr;
-     }
-     var vertexArr = ['A-1','B-1','C-1','A-2','B-2','C-2','A-3','B-3','C-3',];
-     var optionalArr = [
-     	['A-1','B-1','C-1'],
-     	['B-1','C-3'],
-     	['A-3','B-2','C-1']
-     ];
-     getEdgeArr(vertexArr,optionalArr)
+      return arr;
+    }
+    var ds = getSpecEdgeArr(vertexArr,optionalArr);
+    var dsf = getSameLevelEdgeArr(vertexArr,Arr);
+    
+     var dsp = new Tu(vertexArr,optionalArr);
+     vertexArr.forEach(function(item,index){
+       dsp.setAdjoinVertexs(item,ds[item])
+       dsp.setAdjoinVertexs(item,dsf[item])
+     })
+     vertexArr.forEach(function(item,index){
+      console.log(dsp.getVertexCol(vertexArr[index]));
+     })
+     console.log( dsp.getVertexCol('B-2'));
+     console.log(dsp.getUnions(['A-1','B-2']));
   </script> 
 </body>
 </html>
